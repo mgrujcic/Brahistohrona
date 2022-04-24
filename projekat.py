@@ -29,7 +29,7 @@ class Ui_MainWindow(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 351, 116))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(10, 10, 393, 91))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -68,6 +68,7 @@ class Ui_MainWindow(object):
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
+        self.comboBox.addItem("")
         self.horizontalLayout_3.addWidget(self.comboBox)
         self.pushButton = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.pushButton.setObjectName("pushButton")
@@ -93,16 +94,7 @@ class Ui_MainWindow(object):
         self.label_3.setText(_translate("MainWindow", "g"))
         self.unosG.setText(_translate("MainWindow", "9.81"))
         self.label_4.setText(_translate("MainWindow", "Akcija:"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Grafik"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "Animacija"))
+        self.comboBox.setItemText(0, _translate("MainWindow", "Istorija"))
+        self.comboBox.setItemText(1, _translate("MainWindow", "Grafik"))
+        self.comboBox.setItemText(2, _translate("MainWindow", "Animacija"))
         self.pushButton.setText(_translate("MainWindow", "Nacrtaj"))
-
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())

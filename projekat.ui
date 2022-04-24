@@ -44,8 +44,8 @@
      <rect>
       <x>10</x>
       <y>10</y>
-      <width>351</width>
-      <height>116</height>
+      <width>393</width>
+      <height>91</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -104,6 +104,11 @@
        </item>
        <item>
         <widget class="QComboBox" name="comboBox">
+         <item>
+          <property name="text">
+           <string>Istorija</string>
+          </property>
+         </item>
          <item>
           <property name="text">
            <string>Grafik</string>
