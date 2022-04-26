@@ -1,10 +1,10 @@
 import projekat, akcije
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
 import sys
 import numpy as np
 from PyQt5 import sip
-from PyQt5.QtWebEngineWidgets import QWebEngineView as QWebView
 
 from matplotlib.backends.qt_compat import QtWidgets
 from matplotlib.backends.backend_qt5agg import (
@@ -26,9 +26,7 @@ class newMainWindow(projekat.Ui_MainWindow):
     def addWebPage(self):
         self.deleteLayout(self.frame.layout())
         layout = QtWidgets.QVBoxLayout(self.frame)
-        noviWebView = QWebView()
-        noviWebView.setUrl(QtCore.QUrl("https://alas.matf.bg.ac.rs/~mi20015/index.html"))
-        noviWebView.setObjectName("webView")
+        noviWebView = akcije.napraviVebView()
         layout.addWidget(noviWebView)
 
 
@@ -44,38 +42,37 @@ class newMainWindow(projekat.Ui_MainWindow):
                     self.deleteLayout(item.layout())
             sip.delete(layout)
 
-''' stara funkcija
-def dodajGrafik(frame):
-    print(str(frame.layout()))
-    
-    layout = QtWidgets.QVBoxLayout(frame)
-
-    static_canvas = FigureCanvas(Figure(figsize=(5, 3)))
-    layout.addWidget(NavigationToolbar(static_canvas, frame))
-    layout.addWidget(static_canvas)
-
-    _static_ax = static_canvas.figure.subplots()
-    t = np.linspace(0, 10, 501)
-    _static_ax.plot(t, np.tan(t), ".")
-'''
+    def ucitajVrednosti(self, MainWindow):
+        try:
+            x = float(self.unosX.text())
+            y = float(self.unosY.text())
+            g = float(self.unosG.text())
+            if x<=0 or y<=0 or g<=0:
+                raise Exception
+        except:
+            poruka = QMessageBox(MainWindow)
+            poruka.setText("X, Y, g moraju biti pozitivni realni brojevi")
+            poruka.show()
+            return (-1, -1, -1)
+        
+        return x,y,g
 
 def odabirAkcije():
-    static_canvas = FigureCanvas(Figure(figsize=(5, 3)))
-    
-    _static_ax = static_canvas.figure.subplots()
-    t = np.linspace(0, 10, 501)
 
-
-    if ui.comboBox.currentText() == "Grafik":
-        _static_ax.plot(t, np.tan(t), ".")
-        ui.addCanvas(static_canvas)
-    elif ui.comboBox.currentText() == "Animacija":
-        _static_ax.plot(t, np.cos(t), ".")
-        ui.addCanvas(static_canvas)
-    else:
+    if ui.comboBox.currentText() == "Istorija":
         ui.addWebPage()
+    else:
+        kanvas = None
+        x, y, g = ui.ucitajVrednosti(MainWindow)
+        if x == -1:
+            return
 
-    
+        if ui.comboBox.currentText() == "Animacija":
+            pass
+        else:
+            kanvas = akcije.nacrtajSve(x, y, g)
+
+        ui.addCanvas(kanvas)
     
 
 
