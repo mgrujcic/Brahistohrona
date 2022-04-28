@@ -12,7 +12,7 @@ brojTacaka = 1000
 
 def napraviVebView():
     noviWebView = QWebView()
-    noviWebView.setUrl(QtCore.QUrl("https://alas.matf.bg.ac.rs/~mi20015/index.html"))
+    noviWebView.setUrl(QtCore.QUrl.fromLocalFile(QtCore.QFileInfo("site/index.html").absoluteFilePath()))
     noviWebView.setObjectName("webView")
     return noviWebView
 
