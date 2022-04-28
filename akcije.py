@@ -43,8 +43,9 @@ def nacrtajSve(x, y, g):
     ax = kanvas.figure.subplots()
 
     xsDuz, ysDuz, tDuz = vrednostiDuz(x, y, g)
-
     ax.plot(xsDuz, ysDuz, label = 'Prava: {:.5f} s'.format(tDuz))
+
+    
     ax.legend()
     ax.invert_yaxis()
 
