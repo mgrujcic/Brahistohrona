@@ -28,10 +28,10 @@ def vremeZaDuz(x1, y1, x2, y2, g):
     y = y2-y1
 
     put = np.sqrt(x**2 + y**2)
-    sinusUgla = x/put
-    ubrzanje = g*sinusUgla
+    kosinusUgla = y/put
+    ubrzanje = g*kosinusUgla
     v = np.sqrt(2*g*y1)
-    vreme = resiKvadratnuJednacinu(0.5*g, v, -put)
+    vreme = resiKvadratnuJednacinu(0.5*ubrzanje, v, -put)
 
     return vreme
 
@@ -47,7 +47,7 @@ def vrednostiDuz(x, y, g):
     k = y/x
     xs = np.linspace(0, x, brojTacaka)
     ys = (k) * xs #koeficijent
-    #print(vremeZaDuz(0, 0, x, y, 0, g))
+    #print(vremeZaDuz(0, 0, x, y, g))
     vreme = vremeZaKrivu(xs, ys, g)
 
     return xs, ys, vreme
