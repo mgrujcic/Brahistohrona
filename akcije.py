@@ -7,7 +7,6 @@ from matplotlib.backends.qt_compat import QtWidgets
 from matplotlib.backends.backend_qt5agg import (
     FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
 from matplotlib.figure import Figure
-from matplotlib import pyplot as plt
 
 brojTacaka = 1000
 
