@@ -23,10 +23,10 @@ class newMainWindow(projekat.Ui_MainWindow):
         layout.addWidget(NavigationToolbar(static_canvas, self.frame))
         layout.addWidget(static_canvas)
 
-    def addWebPage(self):
+    def addWebPage(self, path):
         self.deleteLayout(self.frame.layout())
         layout = QtWidgets.QVBoxLayout(self.frame)
-        noviWebView = akcije.napraviVebView()
+        noviWebView = akcije.napraviVebView(path)
         layout.addWidget(noviWebView)
 
 
@@ -60,7 +60,9 @@ class newMainWindow(projekat.Ui_MainWindow):
 def odabirAkcije():
 
     if ui.comboBox.currentText() == "Istorija":
-        ui.addWebPage()
+        ui.addWebPage("site/index.html")
+    elif ui.comboBox.currentText() == "Cikloida":
+        ui.addWebPage("cikloida/index.html")
     else:
         kanvas = None
         x, y, g = ui.ucitajVrednosti(MainWindow)
@@ -85,6 +87,7 @@ MainWindow.show()
 
 
 ui.pushButton.clicked.connect(odabirAkcije)
+odabirAkcije()
 #dodajGrafik(ui.frame)
 sys.exit(app.exec_())
 

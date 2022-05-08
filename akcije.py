@@ -10,9 +10,9 @@ from matplotlib.figure import Figure
 
 brojTacaka = 1000
 
-def napraviVebView():
+def napraviVebView(path):
     noviWebView = QWebView()
-    noviWebView.setUrl(QtCore.QUrl.fromLocalFile(QtCore.QFileInfo("site/index.html").absoluteFilePath()))
+    noviWebView.setUrl(QtCore.QUrl.fromLocalFile(QtCore.QFileInfo(path).absoluteFilePath()))
     noviWebView.setObjectName("webView")
     return noviWebView
 
