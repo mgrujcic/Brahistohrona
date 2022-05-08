@@ -33,8 +33,11 @@ def vremeZaDuz(x1, y1, x2, y2, g):
     kosinusUgla = y/put
     ubrzanje = g*kosinusUgla
     v = np.sqrt(2*g*y1)
-    vreme = resiKvadratnuJednacinu(0.5*ubrzanje, v, -put)
 
+    if abs(ubrzanje) > 1e-8:
+        vreme = resiKvadratnuJednacinu(0.5*ubrzanje, v, -put)
+    else:
+        vreme = put/v
     return vreme
 
 def vremeZaKrivu(xs, ys, g):
