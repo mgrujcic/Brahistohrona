@@ -8,6 +8,8 @@ from matplotlib.backends.backend_qt5agg import (
     FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
 from matplotlib.figure import Figure
 
+from scipy.optimize import newton
+
 brojTacaka = 1000
 
 def napraviVebView():
@@ -61,6 +63,20 @@ def vrednostiKrug(x, y, g):
 
     return xs, ys, vreme
 
+def vrednostiCikloida(x, y, g):
+    
+    parametarKraj =  newton(lambda t: y/x - (1-np.cos(t))/(t-np.sin(t)), np.pi/2)
+
+    R = y/(1 - np.cos(parametarKraj))
+
+    params = np.linspace(0, parametarKraj, brojTacaka)
+    xs = R*(params - np.sin(params))
+    ys = R*(1 - np.cos(params))
+
+    vreme = vremeZaKrivu(xs, ys, g)
+    return xs, ys, vreme
+
+
 def nacrtajSve(x, y, g):
     kanvas = FigureCanvas(Figure(figsize=(5, 3)))
     ax = kanvas.figure.subplots()
@@ -70,6 +86,9 @@ def nacrtajSve(x, y, g):
 
     xsKrug, ysKrug, tKrug = vrednostiKrug(x, y, g)
     ax.plot(xsKrug, ysKrug, label = 'Krug: {:.5f} s'.format(tKrug))
+
+    xsCikloida, ysCikloida, tCikloida = vrednostiCikloida(x, y, g)
+    ax.plot(xsCikloida, ysCikloida, label = 'Cikloida: {:.5f} s'.format(tCikloida))
 
     ax.set_aspect('equal')
     ax.legend()
