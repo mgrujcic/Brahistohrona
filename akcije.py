@@ -8,7 +8,7 @@ from matplotlib.backends.backend_qt5agg import (
     FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
 from matplotlib.figure import Figure
 
-from scipy.optimize import newton
+from scipy.optimize import fsolve
 
 brojTacaka = 1000
 
@@ -68,8 +68,8 @@ def vrednostiKrug(x, y, g):
 
 def vrednostiCikloida(x, y, g):
     
-    parametarKraj =  newton(lambda t: y/x - (1-np.cos(t))/(t-np.sin(t)), np.pi/2)
-
+    parametarKraj = fsolve(lambda t: y/x - (1-np.cos(t))/(t-np.sin(t)), np.pi*(2*x/(x+y)))[0]
+    
     R = y/(1 - np.cos(parametarKraj))
 
     params = np.linspace(0, parametarKraj, brojTacaka)
