@@ -24,7 +24,7 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
             self.y = 1.5 + np.sin(self.n/20)
 
             # The window
-            self.fig = Figure(figsize=(5,5), dpi=100)
+            self.fig = Figure(figsize=(5,5))
             ax1 = self.fig.subplots()
 
             # ax1 settings
@@ -32,8 +32,8 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
             ax1.set_ylabel('raw data')
             self.line1 = Line2D([], [], color='blue')
             ax1.add_line(self.line1)
-            ax1.set_xlim([0, 5])
-            ax1.set_ylim([0, 5])
+            ax1.set_xlim([0, 1000])
+            ax1.set_ylim([0, 4])
 
             FigureCanvas.__init__(self, self.fig)
             TimedAnimation.__init__(self, self.fig, interval = 20, blit = True)
@@ -62,7 +62,6 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
 
 def animiraj(x, y, g):
     kanvas = CustomFigCanvas()
-    ax = kanvas.figure.subplots()
     #xs, ys =[], []
     #ln, = ax.plot([], [], 'ro')
 
