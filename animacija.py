@@ -3,7 +3,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWebEngineWidgets import QWebEngineView as QWebView,QWebEnginePage as QWebPage
 from PyQt5.QtWebEngineWidgets import QWebEngineSettings as QWebSettings
 import numpy as np
-from matplotlib.lines import Line2D
+from matplotlib.patches import Circle
+
 
 from matplotlib.backends.qt_compat import QtWidgets
 from matplotlib.backends.backend_qt5agg import (
@@ -27,24 +28,26 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
             ax1 = self.fig.subplots()
 
             # The data
-            xsDuz, ysDuz, tDuz = akcije.vrednostiDuz(x, y, g)
-            ax1.plot(xsDuz, ysDuz, label = 'Prava: {:.5f} s'.format(tDuz))
+            self.xsDuz, self.ysDuz, self.tDuz = akcije.vrednostiDuz(x, y, g)
+            ax1.plot(self.xsDuz, self.ysDuz, label = 'Prava: {:.5f} s'.format(self.tDuz))
 
-            xsKrug, ysKrug, tKrug = akcije.vrednostiKrug(x, y, g)
-            ax1.plot(xsKrug, ysKrug, label = 'Krug: {:.5f} s'.format(tKrug))
+            self.xsKrug, self.ysKrug, self.tKrug = akcije.vrednostiKrug(x, y, g)
+            ax1.plot(self.xsKrug, self.ysKrug, label = 'Krug: {:.5f} s'.format(self.tKrug))
 
-            xsCikloida, ysCikloida, tCikloida = akcije.vrednostiCikloida(x, y, g)
-            ax1.plot(xsCikloida, ysCikloida, label = 'Cikloida: {:.5f} s'.format(tCikloida))
+            self.xsCikloida, self.ysCikloida, self.tCikloida = akcije.vrednostiCikloida(x, y, g)
+            ax1.plot(self.xsCikloida, self.ysCikloida, label = 'Cikloida: {:.5f} s'.format(self.tCikloida))
 
 
             self.n = np.linspace(0, 1000, 1001)
-            self.yni = 1.5 + np.sin(self.n/20)
 
-            
             ax1.set_xlabel('time')
             ax1.set_ylabel('raw data')
-            self.line1 = Line2D([], [], color='blue')
-            ax1.add_line(self.line1)
+            self.tackaDuz = Circle((0,0), 0, color='blue')
+            self.tackaKrug = Circle((0,0), 0, color='red')
+            self.tackaCikloida = Circle((0,0), 0, color='green')
+            ax1.add_artist(self.tackaDuz)
+            ax1.add_artist(self.tackaKrug)
+            ax1.add_artist(self.tackaCikloida)
             #ax1.set_xlim([0, 1000])
             #ax1.set_ylim([0, 4])
             ax1.invert_yaxis()
@@ -57,16 +60,24 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
         def _draw_frame(self, framedata):
             i = framedata
 
-            self.line1.set_data(self.n[ 0 : i ], self.yni[ 0 : i ])
-            self._drawn_artists = [self.line1]
+            self.tackaDuz.set(center=(self.xsDuz[i], self.ysDuz[i]))
+            self.tackaKrug.set(center=(self.xsKrug[i], self.ysKrug[i]))
+            self.tackaCikloida.set(center=(self.xsCikloida[i], self.ysCikloida[i]))
+
+            self._drawn_artists = [self.tackaDuz, self.tackaKrug, self.tackaCikloida]
 
         def new_frame_seq(self):
-            return iter(range(self.n.size))
+            return iter(range(akcije.brojTacaka))
 
         def _init_draw(self):
-            lines = [self.line1]
-            for l in lines:
-                l.set_data([], [])
+            self.tackaDuz.set(radius=0.5)
+            self.tackaKrug.set(radius=0.5)
+            self.tackaCikloida.set(radius=0.5)
+
+            #lines = [self.line1]
+            #for l in lines:
+            #    l.set_data([], [])
+            pass
 
         def zaustavi(self):
             self._stop()
@@ -77,5 +88,5 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
 
 def animiraj(x, y, g):
     kanvas = CustomFigCanvas(x, y, g)
-    
+
     return kanvas
