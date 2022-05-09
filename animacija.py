@@ -9,6 +9,7 @@ from matplotlib.backends.qt_compat import QtWidgets
 from matplotlib.backends.backend_qt5agg import (
     FigureCanvasQTAgg as FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
 from matplotlib.figure import Figure
+import akcije
 
 fig, ax = 0, 0
 xs, ys = [], []
@@ -17,23 +18,37 @@ ln, = 0,
 #functional animation??
 class CustomFigCanvas(FigureCanvas, TimedAnimation):
 
-        def __init__(self):
+        def __init__(self, x, y, g):
+            self.g = g
+            self.x = x
+            self.y = y
 
-            # The data
-            self.n = np.linspace(0, 1000, 1001)
-            self.y = 1.5 + np.sin(self.n/20)
-
-            # The window
             self.fig = Figure(figsize=(5,5))
             ax1 = self.fig.subplots()
 
-            # ax1 settings
+            # The data
+            xsDuz, ysDuz, tDuz = akcije.vrednostiDuz(x, y, g)
+            ax1.plot(xsDuz, ysDuz, label = 'Prava: {:.5f} s'.format(tDuz))
+
+            xsKrug, ysKrug, tKrug = akcije.vrednostiKrug(x, y, g)
+            ax1.plot(xsKrug, ysKrug, label = 'Krug: {:.5f} s'.format(tKrug))
+
+            xsCikloida, ysCikloida, tCikloida = akcije.vrednostiCikloida(x, y, g)
+            ax1.plot(xsCikloida, ysCikloida, label = 'Cikloida: {:.5f} s'.format(tCikloida))
+
+
+            self.n = np.linspace(0, 1000, 1001)
+            self.yni = 1.5 + np.sin(self.n/20)
+
+            
             ax1.set_xlabel('time')
             ax1.set_ylabel('raw data')
             self.line1 = Line2D([], [], color='blue')
             ax1.add_line(self.line1)
-            ax1.set_xlim([0, 1000])
-            ax1.set_ylim([0, 4])
+            #ax1.set_xlim([0, 1000])
+            #ax1.set_ylim([0, 4])
+            ax1.invert_yaxis()
+            ax1.set_aspect('equal')
 
             FigureCanvas.__init__(self, self.fig)
             TimedAnimation.__init__(self, self.fig, interval = 20, blit = True)
@@ -42,7 +57,7 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
         def _draw_frame(self, framedata):
             i = framedata
 
-            self.line1.set_data(self.n[ 0 : i ], self.y[ 0 : i ])
+            self.line1.set_data(self.n[ 0 : i ], self.yni[ 0 : i ])
             self._drawn_artists = [self.line1]
 
         def new_frame_seq(self):
@@ -61,12 +76,6 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
 
 
 def animiraj(x, y, g):
-    kanvas = CustomFigCanvas()
-    #xs, ys =[], []
-    #ln, = ax.plot([], [], 'ro')
-
-    
-    #ani = FuncAnimation(fig, azurirajAnimaciju, frames=np.linspace(0, 2*np.pi, 128),
-    #                init_func=inicijalizujAnimaciju, blit=True)
+    kanvas = CustomFigCanvas(x, y, g)
     
     return kanvas
