@@ -54,7 +54,7 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
             ax1.set_aspect('equal')
 
             FigureCanvas.__init__(self, self.fig)
-            TimedAnimation.__init__(self, self.fig, interval = 20, blit = True)
+            TimedAnimation.__init__(self, self.fig, interval = 20, blit = False)
 
 
         def _draw_frame(self, framedata):

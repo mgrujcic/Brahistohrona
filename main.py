@@ -62,7 +62,7 @@ class newMainWindow(projekat.Ui_MainWindow):
 
 def odabirAkcije():
 
-    if ui.comboBox.currentText() == "Istorija":
+    if ui.comboBox.currentText() == "Istorijat":
         ui.addWebPage("site/index.html")
     elif ui.comboBox.currentText() == "Cikloida":
         ui.addWebPage("cikloida/index.html")

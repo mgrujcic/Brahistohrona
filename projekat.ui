@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Brahistohrona</string>
   </property>
   <property name="animated">
    <bool>true</bool>
@@ -86,10 +86,18 @@
         </widget>
        </item>
        <item row="2" column="2">
-        <widget class="QLineEdit" name="unosY"/>
+        <widget class="QLineEdit" name="unosY">
+         <property name="text">
+          <string>3</string>
+         </property>
+        </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QLineEdit" name="unosX"/>
+        <widget class="QLineEdit" name="unosX">
+         <property name="text">
+          <string>10</string>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
@@ -106,17 +114,17 @@
         <widget class="QComboBox" name="comboBox">
          <item>
           <property name="text">
-           <string>Istorija</string>
+           <string>Grafik</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Istorijat</string>
           </property>
          </item>
          <item>
           <property name="text">
            <string>Cikloida</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Grafik</string>
           </property>
          </item>
          <item>
@@ -129,7 +137,7 @@
        <item>
         <widget class="QPushButton" name="pushButton">
          <property name="text">
-          <string>Nacrtaj</string>
+          <string>Prikaži</string>
          </property>
         </widget>
        </item>
