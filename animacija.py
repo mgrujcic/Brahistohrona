@@ -15,8 +15,7 @@ import akcije
 fig, ax = 0, 0
 xs, ys = [], []
 ln, = 0,
-#https://stackoverflow.com/questions/36665850/matplotlib-animation-inside-your-own-gui
-#functional animation??
+
 class CustomFigCanvas(FigureCanvas, TimedAnimation):
 
         def __init__(self, x, y, g):
@@ -27,7 +26,6 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
             self.fig = Figure(figsize=(5,5))
             ax1 = self.fig.subplots()
 
-            # The data
             self.circleRadius = (x+y)*0.01
 
             self.tackaDuz = Circle((0,0), self.circleRadius, color='blue')
