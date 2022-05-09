@@ -47,10 +47,6 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
             self.xsCikloida, self.ysCikloida, self.tCikloida = akcije.vrednostiCikloida(x, y, g)
             ax1.plot(self.xsCikloida, self.ysCikloida, label = 'Cikloida: {:.5f} s'.format(self.tCikloida[-1]), color='green')
 
-            self.n = np.linspace(0, 1000, 1001)
-
-            #ax1.set_xlim([0, 1000])
-            #ax1.set_ylim([0, 4])
             ax1.invert_yaxis()
             ax1.set_aspect('equal')
 
@@ -59,7 +55,6 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
             self.idxKrug = 0
             self.idxCikloida = 0
             self.tAnimacije = int((self.tDuz[-1]+1)*1000/self.tInterval)
-            print(self.tAnimacije)
 
             FigureCanvas.__init__(self, self.fig)
             TimedAnimation.__init__(self, self.fig, interval = self.tInterval, blit = False)
@@ -94,13 +89,6 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
             return iter(range(self.tAnimacije))
 
         def _init_draw(self):
-            #self.tackaDuz.set(radius=0.5)
-            #self.tackaKrug.set(radius=0.5)
-            #self.tackaCikloida.set(radius=0.5)
-
-            #lines = [self.line1]
-            #for l in lines:
-            #    l.set_data([], [])
             pass
 
         def zaustavi(self):

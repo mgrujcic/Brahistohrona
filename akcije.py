@@ -60,13 +60,13 @@ def vrednostiDuz(x, y, g):
 #krug cija je tangenta u (0,0) y osa
 def vrednostiKrug(x, y, g):
     r = (x**2+y**2) / (2*x)
-    xC = r
-    yC = 0
-    # v1 = (-r, 0)
-    # v2 = (x-r, y)
 
-    xs = np.linspace(0, x, brojTacaka)
-    ys = np.sqrt(r**2 - (r-xs)**2)
+    kosinusUgla = ((-r)*(x-r))/(r**2)
+    ugao = np.arccos(kosinusUgla)
+
+    uglovi = np.linspace(0, ugao, brojTacaka)
+    xs = r-r*np.cos(uglovi)
+    ys = r*np.sin(uglovi)
     vreme = vremeZaKrivu(xs, ys, g)
 
     return xs, ys, vreme
