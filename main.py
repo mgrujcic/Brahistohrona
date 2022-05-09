@@ -1,4 +1,4 @@
-import projekat, akcije
+import projekat, akcije, animacija
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
@@ -35,7 +35,10 @@ class newMainWindow(projekat.Ui_MainWindow):
         if layout is not None:
             while layout.count():
                 item = layout.takeAt(0)
+                
                 widget = item.widget()
+                if isinstance(widget, animacija.CustomFigCanvas):
+                    widget.zaustavi()
                 if widget is not None:
                     widget.deleteLater()
                 else:
@@ -70,7 +73,7 @@ def odabirAkcije():
             return
 
         if ui.comboBox.currentText() == "Animacija":
-            pass
+            kanvas = animacija.animiraj(x, y, g)
         else:
             kanvas = akcije.nacrtajSve(x, y, g)
 
