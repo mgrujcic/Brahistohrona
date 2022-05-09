@@ -41,12 +41,12 @@ def vremeZaDuz(x1, y1, x2, y2, g):
     return vreme
 
 def vremeZaKrivu(xs, ys, g):
-    vreme = 0
+    vremena = [0]
 
     for i in range(0, brojTacaka-1):
-        vreme = vreme + vremeZaDuz(xs[i], ys[i], xs[i+1], ys[i+1], g)
+        vremena.append(vremena[-1] + vremeZaDuz(xs[i], ys[i], xs[i+1], ys[i+1], g))
 
-    return vreme
+    return vremena
 
 def vrednostiDuz(x, y, g):
     k = y/x
@@ -60,6 +60,11 @@ def vrednostiDuz(x, y, g):
 #krug cija je tangenta u (0,0) y osa
 def vrednostiKrug(x, y, g):
     r = (x**2+y**2) / (2*x)
+    xC = r
+    yC = 0
+    # v1 = (-r, 0)
+    # v2 = (x-r, y)
+
     xs = np.linspace(0, x, brojTacaka)
     ys = np.sqrt(r**2 - (r-xs)**2)
     vreme = vremeZaKrivu(xs, ys, g)
@@ -67,9 +72,9 @@ def vrednostiKrug(x, y, g):
     return xs, ys, vreme
 
 def vrednostiCikloida(x, y, g):
-    
+
     parametarKraj = fsolve(lambda t: y/x - (1-np.cos(t))/(t-np.sin(t)), np.pi*(2*x/(x+y)))[0]
-    
+
     R = y/(1 - np.cos(parametarKraj))
 
     params = np.linspace(0, parametarKraj, brojTacaka)
@@ -85,13 +90,13 @@ def nacrtajSve(x, y, g):
     ax = kanvas.figure.subplots()
 
     xsDuz, ysDuz, tDuz = vrednostiDuz(x, y, g)
-    ax.plot(xsDuz, ysDuz, label = 'Prava: {:.5f} s'.format(tDuz))
+    ax.plot(xsDuz, ysDuz, label = 'Prava: {:.5f} s'.format(tDuz[-1]), color='blue')
 
     xsKrug, ysKrug, tKrug = vrednostiKrug(x, y, g)
-    ax.plot(xsKrug, ysKrug, label = 'Krug: {:.5f} s'.format(tKrug))
+    ax.plot(xsKrug, ysKrug, label = 'Krug: {:.5f} s'.format(tKrug[-1]), color='red')
 
     xsCikloida, ysCikloida, tCikloida = vrednostiCikloida(x, y, g)
-    ax.plot(xsCikloida, ysCikloida, label = 'Cikloida: {:.5f} s'.format(tCikloida))
+    ax.plot(xsCikloida, ysCikloida, label = 'Cikloida: {:.5f} s'.format(tCikloida[-1]), color='green')
 
     ax.set_aspect('equal')
     ax.legend()

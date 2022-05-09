@@ -28,51 +28,75 @@ class CustomFigCanvas(FigureCanvas, TimedAnimation):
             ax1 = self.fig.subplots()
 
             # The data
+            self.circleRadius = (x+y)*0.01
+
+            self.tackaDuz = Circle((0,0), self.circleRadius, color='blue')
+            self.tackaKrug = Circle((0,0), self.circleRadius, color='red')
+            self.tackaCikloida = Circle((0,0), self.circleRadius, color='green')
+
+            ax1.add_patch(self.tackaDuz)
+            ax1.add_patch(self.tackaKrug)
+            ax1.add_patch(self.tackaCikloida)
+
             self.xsDuz, self.ysDuz, self.tDuz = akcije.vrednostiDuz(x, y, g)
-            ax1.plot(self.xsDuz, self.ysDuz, label = 'Prava: {:.5f} s'.format(self.tDuz))
+            ax1.plot(self.xsDuz, self.ysDuz, label = 'Prava: {:.5f} s'.format(self.tDuz[-1]), color='blue')
 
             self.xsKrug, self.ysKrug, self.tKrug = akcije.vrednostiKrug(x, y, g)
-            ax1.plot(self.xsKrug, self.ysKrug, label = 'Krug: {:.5f} s'.format(self.tKrug))
+            ax1.plot(self.xsKrug, self.ysKrug, label = 'Krug: {:.5f} s'.format(self.tKrug[-1]), color='red')
 
             self.xsCikloida, self.ysCikloida, self.tCikloida = akcije.vrednostiCikloida(x, y, g)
-            ax1.plot(self.xsCikloida, self.ysCikloida, label = 'Cikloida: {:.5f} s'.format(self.tCikloida))
-
+            ax1.plot(self.xsCikloida, self.ysCikloida, label = 'Cikloida: {:.5f} s'.format(self.tCikloida[-1]), color='green')
 
             self.n = np.linspace(0, 1000, 1001)
 
-            ax1.set_xlabel('time')
-            ax1.set_ylabel('raw data')
-            self.tackaDuz = Circle((0,0), 0, color='blue')
-            self.tackaKrug = Circle((0,0), 0, color='red')
-            self.tackaCikloida = Circle((0,0), 0, color='green')
-            ax1.add_artist(self.tackaDuz)
-            ax1.add_artist(self.tackaKrug)
-            ax1.add_artist(self.tackaCikloida)
             #ax1.set_xlim([0, 1000])
             #ax1.set_ylim([0, 4])
             ax1.invert_yaxis()
             ax1.set_aspect('equal')
 
+            self.tInterval = 20
+            self.idxDuz = 0
+            self.idxKrug = 0
+            self.idxCikloida = 0
+            self.tAnimacije = int((self.tDuz[-1]+1)*1000/self.tInterval)
+            print(self.tAnimacije)
+
             FigureCanvas.__init__(self, self.fig)
-            TimedAnimation.__init__(self, self.fig, interval = 20, blit = True)
+            TimedAnimation.__init__(self, self.fig, interval = self.tInterval, blit = False)
 
 
         def _draw_frame(self, framedata):
             i = framedata
 
-            self.tackaDuz.set(center=(self.xsDuz[i], self.ysDuz[i]))
-            self.tackaKrug.set(center=(self.xsKrug[i], self.ysKrug[i]))
-            self.tackaCikloida.set(center=(self.xsCikloida[i], self.ysCikloida[i]))
+            if i == 0:
+                self.idxDuz = 0
+                self.idxKrug = 0
+                self.idxCikloida = 0
+
+            t = i*self.tInterval/1000
+
+            while self.idxDuz+1 < akcije.brojTacaka and self.tDuz[self.idxDuz+1] <= t:
+                self.idxDuz = self.idxDuz + 1
+
+            while self.idxKrug+1 < akcije.brojTacaka and self.tKrug[self.idxKrug+1] <= t:
+                self.idxKrug = self.idxKrug + 1
+
+            while self.idxCikloida+1 < akcije.brojTacaka and self.tCikloida[self.idxCikloida+1] <= t:
+                self.idxCikloida = self.idxCikloida + 1
+
+            self.tackaDuz.set(center=(self.xsDuz[self.idxDuz], self.ysDuz[self.idxDuz]))
+            self.tackaKrug.set(center=(self.xsKrug[self.idxKrug], self.ysKrug[self.idxKrug]))
+            self.tackaCikloida.set(center=(self.xsCikloida[self.idxCikloida], self.ysCikloida[self.idxCikloida]))
 
             self._drawn_artists = [self.tackaDuz, self.tackaKrug, self.tackaCikloida]
 
         def new_frame_seq(self):
-            return iter(range(akcije.brojTacaka))
+            return iter(range(self.tAnimacije))
 
         def _init_draw(self):
-            self.tackaDuz.set(radius=0.5)
-            self.tackaKrug.set(radius=0.5)
-            self.tackaCikloida.set(radius=0.5)
+            #self.tackaDuz.set(radius=0.5)
+            #self.tackaKrug.set(radius=0.5)
+            #self.tackaCikloida.set(radius=0.5)
 
             #lines = [self.line1]
             #for l in lines:
